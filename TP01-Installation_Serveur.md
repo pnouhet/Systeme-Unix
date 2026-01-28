@@ -111,3 +111,16 @@ Périphérique Amorçage    Début      Fin Secteurs Taille Id Type
 `fdisk -x` me renvoi sensiblement la même chose, mais après une recherche dans le man, `fdisk -x` renvoi une liste identique à `fdisk -l` avec plus de détails.
 
 ## Aller plus loin
+
+###### preseed
+est un fichier de configuration donner au début de l'installation du serveur Debian. Il contient les réponses aux questions qui sont normalement posées durant l'installation (langue, partitionnement, fuseau horaire, création d'utilisateur, etc.).
+Il est utile par exemple pour un déploiement de masse ou pour garantir que chaque machine respecte les standards de sécurité et de configuration de d'une entreprise.
+
+###### rescue mode
+Le "Rescue Mode" permet de démarrer le système avec un minimum de services pour réparer des fichiers corrompus ou des problèmes de montage.
+le Rescue Mode demande le mot de passe root pour ouvrir la console, si on as oublié le mot de passe root, le Rescue Mode ne serviva à rien.
+Il faut donc passer par le `init=/bin/bash` on demande au systeme de ne pas lancer le programme init qui gère la sécurité et les services et de nous mettre directement dans un bash.
+
+###### redimensionner partition
+Afin de redimensionner la partition racine, il faut booter sur une clé USB ou en `rescue mode`, car la partition doit être démontée durant l'opération. Il est possible ensuite d'ajuster la taille de la racine avec `resize2fs`.
+

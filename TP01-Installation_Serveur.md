@@ -5,7 +5,9 @@
 
 Suite à la commande `dpkg -l | wc -l`
 J'obtiens le résultat suivant
-[!Texte alternatif](/img/result_dpkg.png "Résultat paquets")
+
+![resultats paquets](./img/result_dpkg.png)
+
 Donc 335paquets.
 
 ### Configuration SSH
@@ -25,7 +27,8 @@ Dans mon cas ici `ssh pierre@127.0.0.1`, puis on entre son mot de passe.
 
 ### Space Usage
 La commande `df -h` me donne le résutat suivant :
-[!Texte alternatif](/img/result_stockage.png "Résultat stockage")
+![Texte alternatif](./img/result_stockage.png "Résultat stockage")
+
 J'ai bien moins de 1GB utilisé par mon serveur.
 
 ### Résultats des commandes

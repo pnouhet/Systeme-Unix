@@ -1,4 +1,4 @@
-# Secure Shell SSH
+# 1. Secure Shell SSH
 
 ## 1.1 Exercice : Connection ssh root
 
@@ -9,7 +9,6 @@ Avantages et incovénients : https://www.malekal.com/securiser-serveur-ssh/ ### 
 
 ## 1.2 Exercice : Authentification par clef / Génération de clefs
 
-### TODO
 J'ai utilisé la commande `ssh-keygen` afin de générer une clef d'authentification.
 ![resultats ssh-keygen](./img/ssh-keygen.jpg)
 Ici dans mon cas j'ai déjà effectué la génération de clef d'authentification, je met donc `n` pour ne pas overwrite ma clef déjà existante.
@@ -57,7 +56,36 @@ Pour protéger notre serveur contre les attaques brute force ssh, consistant à 
 Pour ce faire il suffit d'aller dans notre fichier `/etc/ssh/sshd_config` et de commenter la ligne `PasswordAuthentication no` afin de désactiver l'authentification par mot de passe.
 On peut également restreindre l'accès à l'utilisateur root pour plus de sécurité, on interdit la connexion directe en tant que super-utilisateur. Pour ce faire il suffit toujours dans le fichier `sshd_config` de décommenter et changer la ligne `PermitRootLogin yes` à `PermitRootLogin no`.
 
-# 2.Processus
+# 2. Processus
 ## 2.1 Exercice : Etude des processus UNIX
+### 1
+En utilisant la commande `ps -aux` il est possible d'afficher toute la liste des processus qui tourne sur le serveur.
+L'information **TIME** nous indique le temps depuis lequel est utilisé le processus. Il existe également la commande `top`
+Avec la commande `ps -aux --sort=time` il est possible d'afficher le processus qui a été le plus utilisé sur le serveur.
+Dans mon cas c'est `kworker` avec 14 minutes d'utilisation.
+```
+root         969  0.3  0.0      0     0 ?        I    13:51   0:14 [kworker/0:2-events]
+```
+Pour connaître le premier processus lancé, on utilisé également la commande `ps -aux` mais cette fois-ci on `sort` sur `start`
+`ps -aux --sort=start`
+J'obtiens le résultat suivant :
+```
+root           1  0.0  0.7  23780 14884 ?        Ss   13:13   0:01 /sbin/init
+```
+Donc le premier processus lancé est sbin/init.
 
+Avec la commande `ps -eo pid,lstart,cmd` il est possible de voir quand à démarrer les processus, ici en premier j'ai :
+```
+root@servlocal:~# ps -eo pid,lstart,cmd
+PID                  STARTED CMD
+1 dim. févr.  8 13:13:06 2026 /sbin/init
+```
+La commande `uptime -p` permet d'afficher depuis combien de temps le serveur tourne et de manière jolie (-p pour *pretty*)
+```
+root@servlocal:~# uptime -p
+up 2 hours, 3 minutes
+```
+Afin de savoir combien de processus ont été créer depuis le démarrage du serveur on peut utiliser la commande `grep '^processes' /proc/stat`
+Output : `processes 1366`
+### 2
 

@@ -53,3 +53,11 @@ Si une passphrase avait été paramétré on aurait eu à entrer la passphrase a
 
 ## 1.5 Exercice : S´ecurisez
 
+Pour protéger notre serveur contre les attaques brute force ssh, consistant à tester massivement des combinaisons d'identifiants et de mots de passe il est recommandé de désactiver la connexion par mot de passe de note serveur.
+Pour ce faire il suffit d'aller dans notre fichier `/etc/ssh/sshd_config` et de commenter la ligne `PasswordAuthentication no` afin de désactiver l'authentification par mot de passe.
+On peut également restreindre l'accès à l'utilisateur root pour plus de sécurité, on interdit la connexion directe en tant que super-utilisateur. Pour ce faire il suffit toujours dans le fichier `sshd_config` de décommenter et changer la ligne `PermitRootLogin yes` à `PermitRootLogin no`.
+
+# 2.Processus
+## 2.1 Exercice : Etude des processus UNIX
+
+

@@ -29,13 +29,27 @@ Pour cela on va effectuer la commande `ssh-copy-id username@remote_host` si cela
 Voici la procédure à suivre :
 
 Tout d'abord on execute la commande `cat ~/.ssh/id_ed25519.pub` ce qui nous affiche notre clef publique.
-![resultats ssh-keygen](./img/catsshkey.jpg)
+![resultats cat ssh-key](./img/catsshkey.jpg)
 
 Ensuite on accède au serveur, puis on créer le dossier .ssh si celui-ci n'existe pas `mkdir -p ~/.ssh`
 Puis il suffit d'écrire la commande `echo public_key_string >> ~/.ssh/authorized_keys` en remplaçant `public_key_string` par le résultat du cat.
+Cela va copier notre clef dans le fichier `authorized_keys`.
 
+Il faut maintenant désactiver l'authentification au serveur par mot de passe.
+Pour cela on va dans le fichier `sshd_config` puis on décommente la ligne `PubkeyAuthentication` et on passe la ligne `PasswordAuthentication yes` à `no` afin de désactiver la connexion par mot de passe textuel.
 
-https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server#faqs
+![resultat pubkey](./img/pubkeyauthyes.jpg)
+![resultat pubkey](./img/passwordauthno.jpg)
 
-Puis détaillé la suite : Copying Your Public Key Manually(url du dessus)
+N'oublions pas de relancer le service SSH avec la commande `systemctl restart ssh`
+
+## 1.4 Exercice : Authentification par clef : depuis la machine hote
+
+Il est possible pour nous maintenant de se connecter depuis notre clef, en executant la commande suivante :
+`ssh -i id_ed25519.pub root@192.168.56.101`
+Si une passphrase avait été paramétré on aurait eu à entrer la passphrase afin de se connecter, si ce n'est pas le cas, on est alors directement connecté au serveur.
+
+![resultat connexion sshkey](./img/connexionsshkey.jpg)
+
+## 1.5 Exercice : S´ecurisez
 

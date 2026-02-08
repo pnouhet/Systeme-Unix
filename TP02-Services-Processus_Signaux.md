@@ -1,4 +1,4 @@
-<img width="403" height="38" alt="image" src="https://github.com/user-attachments/assets/8ac1c0ae-c6e2-410f-ac77-650e59b70c1b" /># Secure Shell SSH
+# Secure Shell SSH
 
 ## 1.1 Exercice : Connection ssh root
 

@@ -1,6 +1,8 @@
 # TP 03 : Shell bash
 
+## Exercice : paramètres
 `nano analyse.sh` création du script
+
 ```
 #!/bin/bash
 
@@ -17,7 +19,7 @@ echo "Voici la liste des paramètres :" $@
 `chmod +x analyse.sh` pour ajouter les permissions d'executions du script
 `./analyse.sh` pour éxécuter le script, avec `./` pour faire appel au chemin relatif du fichier.
 
-OUTPUT:
+#### OUTPUT
 ```
 root@servlocal:~# ./analyse.sh test de script
 Bonjour, vous avez rentré 3 nombre de paramètres.
@@ -26,6 +28,7 @@ Le 3ème paramètre est : script
 Voici la liste des paramètres : test de script
 ```
 
+## Exercice : vérification du nombre de paramètres
 `nano concat.sh` création du script
 
 ```
@@ -46,9 +49,89 @@ fi
 `chmod +x concat.sh` pour ajouter les permissions d'executions du script
 `./concat.sh` pour éxécuter le script, avec `./` pour faire appel au chemin relatif du fichier.
 
-OUTPUT:
+#### OUTPUT
 ```
 root@servlocal:~# ./concat.sh pierre nouhet
 pierre nouhet
 ```
 
+## Exercice : argument type et droits
+`nano test-fichier.sh` création du script
+
+```
+#!/bin/bash
+# Script permettant de connaître les permissions en lecture, en écriture ou executable d'un fichier ou d'un répertoire
+
+# -f > fichier ordinaire
+# -d > répertoire
+# -r > est lisible
+# -w > écriture possible
+# -x > executable
+
+echo "Veuillez entrer le nom du fichier : "
+read file
+
+if [ -d $file ]; then #si file est un répertoire
+        echo "Le fichier" ${file} "est un répertoire"
+        if [ -r $file ]; then
+                echo $file "est accessible en lecture"
+        fi
+        if [ -w $file ]; then
+                echo $file "est accessible en écriture"
+        fi
+        if [ -x $file ]; then
+                echo $file "est exécutable"
+        fi
+fi
+if [ -f $file ]; then #si file est un fichier ordinaire
+        echo "Le fichier" ${file} "est un fichier ordinaire"
+        if [ -r $file ]; then
+                echo $file "est accessible en lecture"
+        fi
+        if [ -w $file ]; then
+                echo $file "est accessible en écriture"
+        fi
+        if [ -x $file ]; then
+                echo $file "est exécutable"
+        fi
+fi
+```
+
+#### OUTPUT
+```
+root@servlocal:~# ./test-fichier.sh
+Veuillez entrer le nom du fichier :
+/etc
+Le fichier /etc est un répertoire
+/etc est accessible en lecture
+/etc est accessible en écriture
+/etc est exécutable
+```
+```
+root@servlocal:~# ./test-fichier.sh
+Veuillez entrer le nom du fichier :
+test-fichier.sh
+Le fichier test-fichier.sh est un fichier ordinaire
+test-fichier.sh est accessible en lecture
+test-fichier.sh est accessible en écriture
+test-fichier.sh est exécutable
+```
+
+## Exercice : Afficher le contenu d’un répertoire
+
+`nano listedir.sh` création du script
+```
+#!/bin/bash
+# description du script
+
+repertoire=$1
+
+if [ -f $repertoire ]; then
+        echo "###### fichiers dans" $repertoire
+        ls -f $repertoire
+fi
+if [ -d $repertoire ]; then
+        echo "###### repertoires dans" $repertoire
+        ls -d $repertoire
+fi
+```

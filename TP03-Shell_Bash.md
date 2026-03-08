@@ -122,16 +122,97 @@ test-fichier.sh est exécutable
 `nano listedir.sh` création du script
 ```
 #!/bin/bash
-# description du script
+# Script affichant les fichiers et dossiers d'un répertoire
 
-repertoire=$1
+repertoire=$1 # récupération de l'argument
 
+# filtre sur les fichiers
 if [ -f $repertoire ]; then
         echo "###### fichiers dans" $repertoire
-        ls -f $repertoire
+        find $repertoire -maxdepth 1 -f
 fi
+# filtre sur les dossiers
 if [ -d $repertoire ]; then
         echo "###### repertoires dans" $repertoire
-        ls -d $repertoire
+        find $repertoire -maxdepth 1 -d
+else
+# message en cas d'erreur
+        echo "Erreur" $repertoire "n'est pas un dossier valide"
 fi
+```
+
+#### OUTPUT
+```
+root@servlocal:~# ./listedir.sh /var
+###### repertoires dans /var
+find: attention : l'option -d est obsolète ; veuillez utiliser -depth à la place, parce que celle-ci est est une option conforme à POSIX.
+/var/run
+/var/lib
+/var/lock
+/var/.updated
+/var/tmp
+/var/mail
+/var/spool
+/var/cache
+/var/lost+found
+/var/log
+/var/backups
+/var/local
+/var/opt
+/var
+```
+
+## Exercice : Lister les utilisateurs
+`nano listusers.sh` création du script  
+```
+#!/bin/bash
+# Script pour afficher la liste des users sur le systeme et leur uid correspondant
+
+# pour chaque ligne du fichier passwd on extrait la colonne 1 pour le login et la 3 pour le uid
+for ligne in $(cat /etc/passwd | cut -d: -f1,3); do
+        login=$(echo $ligne | cut -d: -f1) # coupe la variable ligne pour afficher le login
+        uid=$(echo $ligne | cut -d: -f2) # colonne la variable ligne pour afficher le uid
+if [ $uid -gt 100 ]; then # vérifier que la valeur uid est greater than (plus grande que) 100
+        echo "User" $login "a pour uid" $uid
+fi
+done
+```
+
+#### OUTPUT  
+```
+root@servlocal:~# ./listusers.sh
+User nobody a pour uid 65534
+User systemd-network a pour uid 998
+User systemd-timesync a pour uid 991
+User messagebus a pour uid 990
+User pierre a pour uid 1000
+User sshd a pour uid 989
+```
+
+## Exercice : Mon utilisateur existe-t-il
+`nano userexist.sh`  
+```
+#!/bin/bash
+# Script pour afficher si un utilisateur existe
+
+#Récupération du paramètre
+param=$1
+
+# Vérifier si le parametre est un login
+searchLogin=$(grep ^$param /etc/passwd)
+
+if [ ! -z $searchLogin ]; then #si la chaine n'est pas vide alors l'utilisateur existe
+        echo $searchLogin | cut -d: -f3 # on affiche son uid
+else
+        searchUID=$(cat /etc/passwd | cut -d: -f3 | grep ^$param) #sinon verifier si cest un uid en e>
+        if [ ! -z $searchUID ]; then # si on trouve l'uid alors on l'affiche
+                echo $searchUID # affiche l'uid
+        fi
+fi
+```
+
+#### OUTPUT  
+```
+root@servlocal:~# ./userexist.sh pierre
+1000
 ```
